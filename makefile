@@ -1,5 +1,5 @@
 CC := clang++
-CFLAGS := -Wall -Wextra -Wpedantic
+CFLAGS := -Wall -Wextra -Wpedantic -std=c++17
 BIN := main
 SRC := $(wildcard *.cpp)
 
