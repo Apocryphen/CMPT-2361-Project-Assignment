@@ -108,3 +108,34 @@ void swap(PPMImage& a, PPMImage& b){
     swap(a.channelDepth, b.channelDepth);
 }
 
+std::ostream& operator<<(std::ostream& out, const PPMImage& image){
+    //Header
+    out << image.format << '\n' 
+        << image.width << " " << image.height << '\n' 
+        << image.channelDepth << '\n';
+
+    for(int i = 0; i < image.width * image.height; i++){
+        out << image.pixels[i] << " ";
+        if((i+1) % image.width == 0) out << '\n';
+    }
+    return out;
+}
+
+constexpr auto max_size = std::numeric_limits<std::streamsize>::max();
+
+std::istream& operator>>(std::istream& in, PPMImage& image){
+    in >> image.format >> std::ws;
+    while(in.peek() == '#') 
+        in.ignore(max_size, '\n');
+    in >> image.width >> image.height;
+    in >> image.channelDepth;
+
+    std::cout << "Got: Format = " << image.format
+              << " width, height = (" << image.width << ", " << image.height
+              << ") channel depth = " << image.channelDepth << std::endl;
+
+    image.pixels = std::vector(std::istream_iterator<Pixel>(in),
+            std::istream_iterator<Pixel>());
+
+    return in;
+}
