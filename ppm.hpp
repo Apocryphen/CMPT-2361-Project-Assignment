@@ -11,6 +11,7 @@ class Pixel {
         Pixel(unsigned int r, unsigned int g, unsigned int b);
         ~Pixel();
 
+        const unsigned int& operator[](int index) const;
         const unsigned int& operator[](const char* colour) const;
 
         Pixel& operator=(const Pixel& other);
