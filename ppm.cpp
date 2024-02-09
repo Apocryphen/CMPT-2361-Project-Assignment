@@ -4,13 +4,14 @@
 
 PPM::PPM() {
     pixels = {};
-    magic = "";
+    magic = comment = "";
     width = height = maxColor = 0;
 }
 
 PPM::PPM(const PPM& other) {
     pixels = other.pixels;
     magic = other.magic;
+    comment = other.comment;
     width  = other.width;
     height = other.height;
     maxColor = other.maxColor;
@@ -19,6 +20,7 @@ PPM::PPM(const PPM& other) {
 PPM::PPM(PPM&& other) { 
     pixels = std::move(other.pixels);
     magic = std::move(other.magic);
+    comment = std::move(other.comment);
     width  = other.width;
     height = other.height;
     maxColor = other.maxColor;
@@ -26,7 +28,7 @@ PPM::PPM(PPM&& other) {
 
 PPM::PPM(std::ifstream& in) : PPM(){
     in >> *this;
-    if(in.fail()) 
+    if(in.fail())
         throw std::runtime_error("Failed to parse PPM file");
 }
 
@@ -40,6 +42,7 @@ PPM::~PPM() {
 const PPM& PPM::operator=(const PPM& other){
     pixels = other.pixels;
     magic = other.magic;
+    comment = other.comment;
     width  = other.width;
     height = other.height;
     maxColor = other.maxColor;
@@ -50,6 +53,7 @@ const PPM& PPM::operator=(PPM&& other){
     if(&other == this) return *this;
     pixels = std::move(other.pixels);
     magic = std::move(other.magic);
+    comment = std::move(other.comment);
     width  = other.width;
     height = other.height;
     maxColor = other.maxColor;
