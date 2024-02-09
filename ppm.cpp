@@ -142,15 +142,15 @@ std::istream& operator>>(std::istream& in, PPMImage& image){
     in >> image.channelDepth;
 
     if(in.fail())
-        throw std::runtime_error("Malformed PPM header");
+        return in;
     
     size_t imageSize = image.width * image.height;
     image.pixels.reserve(imageSize);
     image.pixels.assign(std::istream_iterator<Pixel>(in), {});
-    
-    if(image.pixels.size() != imageSize)
-        throw std::runtime_error("Expected "     + std::to_string(imageSize) + 
-                                 " pixels, got " + std::to_string(image.pixels.size()));
+
+    if(image.pixels.size() == imageSize)                    //Clear the failbit on a successful parse
+        in.clear(in.rdstate() & ~std::ios_base::failbit);   //This is set because the iterator tries to parse past the EOF
+
     return in;
 }
 
