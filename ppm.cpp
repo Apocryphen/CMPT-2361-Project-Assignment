@@ -125,9 +125,9 @@ std::ostream& operator<<(std::ostream& out, const PPMImage& image){
         << image.width << " " << image.height << '\n' 
         << image.channelDepth << '\n';
 
-    for(int i = 0; i < image.width * image.height; i++){
-        out << image.pixels[i] << " ";
-        if((i+1) % image.width == 0) out << '\n';
+    for(unsigned int i = 0; i < image.width * image.height; i++){
+        out << image.pixels[i] 
+            <<  ((i+1) % image.width == 0 ? "\n" : " ");
     }
     return out;
 }
@@ -141,13 +141,16 @@ std::istream& operator>>(std::istream& in, PPMImage& image){
     in >> image.width >> image.height;
     in >> image.channelDepth;
 
-    std::cout << "Got: Format = " << image.format
-              << " width, height = (" << image.width << ", " << image.height
-              << ") channel depth = " << image.channelDepth << std::endl;
-
-    image.pixels = std::vector(std::istream_iterator<Pixel>(in),
-            std::istream_iterator<Pixel>());
-
+    if(in.fail())
+        throw std::runtime_error("Malformed PPM header");
+    
+    size_t imageSize = image.width * image.height;
+    image.pixels.reserve(imageSize);
+    image.pixels.assign(std::istream_iterator<Pixel>(in), {});
+    
+    if(image.pixels.size() != imageSize)
+        throw std::runtime_error("Expected "     + std::to_string(imageSize) + 
+                                 " pixels, got " + std::to_string(image.pixels.size()));
     return in;
 }
 
