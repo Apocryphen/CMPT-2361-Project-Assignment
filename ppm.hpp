@@ -39,6 +39,11 @@ class PPMImage {
 
         friend void swap(PPMImage& a, PPMImage& b);
 
+        std::vector<Pixel>::iterator begin();
+        std::vector<Pixel>::iterator end();
+        std::vector<Pixel>::const_iterator cbegin();
+        std::vector<Pixel>::const_iterator cend();
+
     private:
         std::vector<Pixel> pixels;
         std::string format;
