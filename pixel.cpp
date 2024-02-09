@@ -32,14 +32,14 @@ unsigned int& Pixel::operator[](const char* color) {
     if     (strcmp(color, "red")   == 0) return red;
     else if(strcmp(color, "green") == 0) return green;
     else if(strcmp(color, "blue")  == 0) return blue;
-    else throw std::out_of_range("Bad colour index");
+    else throw InputOutOfBoundsException("Bad colour index", color);
 }
 
 const unsigned int& Pixel::operator[](const char* color) const{
     if     (strcmp(color, "red")   == 0) return red;
     else if(strcmp(color, "green") == 0) return green;
     else if(strcmp(color, "blue")  == 0) return blue;
-    else throw std::out_of_range("Bad colour index");
+    else throw InputOutOfBoundsException("Bad colour index", color);
 }
 
 Pixel& Pixel::operator=(const Pixel& other){
