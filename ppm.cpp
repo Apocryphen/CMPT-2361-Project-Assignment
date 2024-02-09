@@ -59,6 +59,7 @@ const PPM& PPM::operator=(PPM&& other){
 std::ostream& operator<<(std::ostream& out, const PPM& image){
     //Header
     out << image.magic << '\n' 
+        << image.comment
         << image.width << " " << image.height << '\n' 
         << image.maxColor << '\n';
 
@@ -73,8 +74,11 @@ constexpr auto max_size = std::numeric_limits<std::streamsize>::max();
 
 std::istream& operator>>(std::istream& in, PPM& image){
     in >> image.magic >> std::ws;
-    while(in.peek() == '#') 
-        in.ignore(max_size, '\n');
+    while(in.peek() == '#'){ 
+        std::string line;
+        std::getline(in, line);
+        image.comment.append(line + '\n');
+    }
     in >> image.width >> image.height;
     in >> image.maxColor;
 
