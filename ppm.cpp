@@ -1,5 +1,7 @@
 #include "ppm.hpp"
 
+#include <fstream> // Cannot up-cast without this include
+
 PPM::PPM() {
     pixels = {};
     magic = "";
@@ -20,6 +22,12 @@ PPM::PPM(PPM&& other) {
     width  = other.width;
     height = other.height;
     maxColor = other.maxColor;
+}
+
+PPM::PPM(std::ifstream& in) : PPM(){
+    in >> *this;
+    if(in.fail()) 
+        throw std::runtime_error("Failed to parse PPM file");
 }
 
 //Not needed but helps to have blank data in case of an error
