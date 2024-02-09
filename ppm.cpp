@@ -1,58 +1,58 @@
 #include "ppm.hpp"
 
-PPMImage::PPMImage() {
+PPM::PPM() {
     pixels = {};
-    format = "";
-    width = height = channelDepth = 0;
+    magic = "";
+    width = height = maxColor = 0;
 }
 
-PPMImage::PPMImage(const PPMImage& other) {
+PPM::PPM(const PPM& other) {
     pixels = other.pixels;
-    format = other.format;
+    magic = other.magic;
     width  = other.width;
     height = other.height;
-    channelDepth = other.channelDepth;
+    maxColor = other.maxColor;
 }
 
-PPMImage::PPMImage(PPMImage&& other) { 
+PPM::PPM(PPM&& other) { 
     pixels = std::move(other.pixels);
-    format = std::move(other.format);
+    magic = std::move(other.magic);
     width  = other.width;
     height = other.height;
-    channelDepth = other.channelDepth;
+    maxColor = other.maxColor;
 }
 
 //Not needed but helps to have blank data in case of an error
-PPMImage::~PPMImage() { 
+PPM::~PPM() { 
     pixels.clear(); 
-    format = "";
-    width = height = channelDepth = 0;
+    magic = "";
+    width = height = maxColor = 0;
 }
 
-PPMImage& PPMImage::operator=(const PPMImage& other){
+const PPM& PPM::operator=(const PPM& other){
     pixels = other.pixels;
-    format = other.format;
+    magic = other.magic;
     width  = other.width;
     height = other.height;
-    channelDepth = other.channelDepth;
+    maxColor = other.maxColor;
     return *this;
 }
 
-PPMImage& PPMImage::operator=(PPMImage&& other){
+const PPM& PPM::operator=(PPM&& other){
     if(&other == this) return *this;
     pixels = std::move(other.pixels);
-    format = std::move(other.format);
+    magic = std::move(other.magic);
     width  = other.width;
     height = other.height;
-    channelDepth = other.channelDepth;
+    maxColor = other.maxColor;
     return *this;
 }
 
-std::ostream& operator<<(std::ostream& out, const PPMImage& image){
+std::ostream& operator<<(std::ostream& out, const PPM& image){
     //Header
-    out << image.format << '\n' 
+    out << image.magic << '\n' 
         << image.width << " " << image.height << '\n' 
-        << image.channelDepth << '\n';
+        << image.maxColor << '\n';
 
     for(unsigned int i = 0; i < image.width * image.height; i++){
         out << image.pixels[i] 
@@ -63,12 +63,12 @@ std::ostream& operator<<(std::ostream& out, const PPMImage& image){
 
 constexpr auto max_size = std::numeric_limits<std::streamsize>::max();
 
-std::istream& operator>>(std::istream& in, PPMImage& image){
-    in >> image.format >> std::ws;
+std::istream& operator>>(std::istream& in, PPM& image){
+    in >> image.magic >> std::ws;
     while(in.peek() == '#') 
         in.ignore(max_size, '\n');
     in >> image.width >> image.height;
-    in >> image.channelDepth;
+    in >> image.maxColor;
 
     if(in.fail())
         return in;
@@ -83,7 +83,7 @@ std::istream& operator>>(std::istream& in, PPMImage& image){
     return in;
 }
 
-std::vector<Pixel>::iterator PPMImage::begin()  { return pixels.begin(); }
-std::vector<Pixel>::iterator PPMImage::end()    { return pixels.end(); }
-std::vector<Pixel>::const_iterator PPMImage::cbegin() { return pixels.cbegin(); }
-std::vector<Pixel>::const_iterator PPMImage::cend()   { return pixels.cend(); }
+std::vector<Pixel>::iterator PPM::begin()  { return pixels.begin(); }
+std::vector<Pixel>::iterator PPM::end()    { return pixels.end(); }
+std::vector<Pixel>::const_iterator PPM::cbegin() { return pixels.cbegin(); }
+std::vector<Pixel>::const_iterator PPM::cend()   { return pixels.cend(); }
