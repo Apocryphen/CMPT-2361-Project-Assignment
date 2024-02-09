@@ -1,7 +1,10 @@
 #ifndef PPM_HPP
 #define PPM_HPP
 
-#include <iostream> // For friend decls
+#include <iostream> 
+#include <vector>
+#include <string>
+
 #include "pixel.hpp"
 
 class PPM{

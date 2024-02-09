@@ -1,5 +1,7 @@
 #include "pixel.hpp"
 
+#include<cstring> //For strcmp
+
 Pixel::Pixel(){
     red = green = blue = 0;
 }
