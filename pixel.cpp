@@ -71,3 +71,16 @@ std::istream& operator>>(std::istream& in, Pixel& pixel){
     return in;
 }
 
+// Shorten a long name
+using IOExcept = Pixel::InputOutOfBoundsException;
+IOExcept::InputOutOfBoundsException(const char* errorMsg, const char* offendingIdx){
+    errorMessage = errorMsg;
+    offendingIndex = offendingIdx;
+}
+const char* IOExcept::returnError() const{
+    return errorMessage;
+}
+const char* IOExcept::returnOffendingIndex() const {
+    return offendingIndex;
+}
+

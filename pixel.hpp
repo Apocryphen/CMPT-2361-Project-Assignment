@@ -21,8 +21,6 @@ class Pixel {
         friend std::ostream& operator<<(std::ostream& out, const Pixel& pixel);
         friend std::istream& operator>>(std::istream& in, Pixel& pixel);
 
-    private:
-        unsigned int red, green, blue;
         class InputOutOfBoundsException{
             public:
                 InputOutOfBoundsException(const char* errorMsg, const char* offendingIdx);
@@ -32,6 +30,8 @@ class Pixel {
                 const char* errorMessage;
                 const char* offendingIndex;
         };
+    private:
+        unsigned int red, green, blue;
 };
 
 #endif
