@@ -16,6 +16,8 @@ Pixel::Pixel(Pixel&& other){
     blue = other.blue;
 }
 
+Pixel::Pixel(unsigned int intensity) : Pixel(intensity, intensity, intensity) {}
+
 Pixel::Pixel(unsigned int r, unsigned int g, unsigned int b){
     red   = r;
     green = g;

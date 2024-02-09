@@ -8,11 +8,11 @@ class Pixel {
         Pixel();
         Pixel(const Pixel& other);
         Pixel(Pixel&& other);
+        Pixel(unsigned int intensity);
         Pixel(unsigned int r, unsigned int g, unsigned int b);
         ~Pixel();
 
         unsigned int& operator[](const char* color);
-        const unsigned int& operator[](int index) const;
         const unsigned int& operator[](const char* color) const;
 
         Pixel& operator=(const Pixel& other);
