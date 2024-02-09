@@ -77,7 +77,6 @@ PPMImage::PPMImage() {
     width = height = channelDepth = 0;
 }
 
-//To avoid all this duplication I'm using copy swap after this
 PPMImage::PPMImage(const PPMImage& other) {
     pixels = other.pixels;
     format = other.format;
@@ -86,7 +85,13 @@ PPMImage::PPMImage(const PPMImage& other) {
     channelDepth = other.channelDepth;
 }
 
-PPMImage::PPMImage(PPMImage&& other) : PPMImage() { swap(*this, other); }
+PPMImage::PPMImage(PPMImage&& other) { 
+    pixels = std::move(other.pixels);
+    format = std::move(other.format);
+    width  = other.width;
+    height = other.height;
+    channelDepth = other.channelDepth;
+}
 
 //Not needed but helps to have blank data in case of an error
 PPMImage::~PPMImage() { 
@@ -95,25 +100,23 @@ PPMImage::~PPMImage() {
     width = height = channelDepth = 0;
 }
 
-//Pass by value to take advabtage of copy elison.
-PPMImage& PPMImage::operator=(PPMImage other){
-    swap(*this, other);
+PPMImage& PPMImage::operator=(const PPMImage& other){
+    pixels = other.pixels;
+    format = other.format;
+    width  = other.width;
+    height = other.height;
+    channelDepth = other.channelDepth;
     return *this;
 }
 
 PPMImage& PPMImage::operator=(PPMImage&& other){
-    swap(*this, other);
+    if(&other == this) return *this;
+    pixels = std::move(other.pixels);
+    format = std::move(other.format);
+    width  = other.width;
+    height = other.height;
+    channelDepth = other.channelDepth;
     return *this;
-}
-
-// For the copy swap idiom
-void swap(PPMImage& a, PPMImage& b){
-    using std::swap;
-    swap(a.pixels, b.pixels);
-    swap(a.format, b.format);
-    swap(a.width, b.width);
-    swap(a.height, b.height);
-    swap(a.channelDepth, b.channelDepth);
 }
 
 std::ostream& operator<<(std::ostream& out, const PPMImage& image){

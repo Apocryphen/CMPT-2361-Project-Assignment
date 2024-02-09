@@ -32,7 +32,6 @@ class PPMImage {
         ~PPMImage();
 
         PPMImage& operator=(const PPMImage& other);
-        PPMImage& operator=(PPMImage other);
         PPMImage& operator=(PPMImage&& other);
 
         friend std::ostream& operator<<(std::ostream& out, const PPMImage& pixel);
