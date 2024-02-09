@@ -28,14 +28,13 @@ Pixel::~Pixel() {
     red = green = blue = 0; // Not really necessary
 }
 
-const unsigned int& Pixel::operator[](int index) const{
-    switch (index){
-        case 0: return red;
-        case 1: return green;
-        case 2: return blue;
-        default: throw std::out_of_range("Bad colour index");
-    }
+unsigned int& Pixel::operator[](const char* color) {
+    if     (strcmp(color, "red")   == 0) return red;
+    else if(strcmp(color, "green") == 0) return green;
+    else if(strcmp(color, "blue")  == 0) return blue;
+    else throw std::out_of_range("Bad colour index");
 }
+
 const unsigned int& Pixel::operator[](const char* color) const{
     if     (strcmp(color, "red")   == 0) return red;
     else if(strcmp(color, "green") == 0) return green;
