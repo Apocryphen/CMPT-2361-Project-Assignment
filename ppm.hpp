@@ -25,6 +25,8 @@ class PPM{
         void SetMetaData(const PPM& other);
         
         void Resize(unsigned int factor);
+        void Reserve(unsigned int factor);
+
         void SaveImageToFile(std::string fileName) const;
 
         void SetComment(std::string newComment);

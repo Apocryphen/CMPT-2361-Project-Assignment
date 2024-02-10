@@ -39,6 +39,13 @@ PPM::~PPM() {
     width = height = maxColor = 0;
 }
 
+void PPM::Resize(unsigned int newSize){
+    pixels.resize(newSize); 
+}
+
+void PPM::Reserve(unsigned int newSize){
+    pixels.reserve(newSize); // Doesn't default construct all elements
+}
 
 void PPM::SaveImageToFile(std::string fileName) const{
     std::ofstream outfile(fileName);
