@@ -40,6 +40,15 @@ PPM::~PPM() {
 }
 
 
+void PPM::SaveImageToFile(std::string fileName) const{
+    std::ofstream outfile(fileName);
+    if(!outfile.is_open())
+        throw std::runtime_error("Failed to write to file " + fileName);
+
+    outfile << *this;
+    outfile.close();
+}
+
 std::string PPM::getComment()   const { return comment; }
 std::string PPM::getMagic()     const { return magic; }
 unsigned int PPM::GetHeight()   const { return height; }
