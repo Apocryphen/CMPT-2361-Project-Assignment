@@ -1,3 +1,4 @@
 main
 *.dSYM/
 *.ppm
+.DS_Store

@@ -14,5 +14,6 @@ debug: default
 
 .PHONY: clean
 clean:
-	rm $(BIN)
-	rm -rf *.dSYM/
+	-rm $(BIN)
+	-rm -rf *.dSYM/
+	-rm .DS_Store
