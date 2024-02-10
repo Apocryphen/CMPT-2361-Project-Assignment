@@ -21,6 +21,8 @@ class PPM{
         unsigned int GetWidth() const;
         unsigned int GetSize() const;
         unsigned int GetMaxColor() const;
+
+        void SetMetaData(const PPM& other);
         
         void Resize(unsigned int factor);
         void SaveImageToFile(std::string fileName) const;
@@ -34,8 +36,8 @@ class PPM{
         const PPM& operator=(const PPM& other);
         const PPM& operator=(PPM&& other);
 
-        const Pixel& operator[](unsigned int index) const;
         Pixel& operator[](unsigned int index);
+        const Pixel& operator[](unsigned int index) const;
 
         friend std::ostream& operator<<(std::ostream& out, const PPM& pixel);
         friend std::istream& operator>>(std::istream& in, PPM& pixel);

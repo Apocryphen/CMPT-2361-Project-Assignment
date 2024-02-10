@@ -39,6 +39,28 @@ PPM::~PPM() {
     width = height = maxColor = 0;
 }
 
+
+std::string PPM::getComment()   const { return comment; }
+std::string PPM::getMagic()     const { return magic; }
+unsigned int PPM::GetHeight()   const { return height; }
+unsigned int PPM::GetWidth()    const { return width; }
+unsigned int PPM::GetSize()     const { return width * height; }
+unsigned int PPM::GetMaxColor() const { return maxColor; }
+
+void PPM::SetMetaData(const PPM& other){
+    magic   = other.magic;
+    comment = other.comment;
+    width   = other.width;
+    height  = other.height;
+    maxColor = other.maxColor;
+}
+
+void PPM::SetComment(std::string newComment)    { comment   = newComment; }
+void PPM::SetMagic(std::string newMagic)        { magic     = newMagic; }
+void PPM::SetHeight(unsigned int newHeight)     { height    = newHeight; }
+void PPM::SetWidth(unsigned int newWidth)       { width     = newWidth; }
+void PPM::SetMaxColor(unsigned int newMaxColor) { maxColor  = newMaxColor; }
+
 const PPM& PPM::operator=(const PPM& other){
     pixels = other.pixels;
     magic = other.magic;
@@ -74,7 +96,8 @@ std::ostream& operator<<(std::ostream& out, const PPM& image){
     return out;
 }
 
-constexpr auto max_size = std::numeric_limits<std::streamsize>::max();
+Pixel& PPM::operator[](unsigned int index){ return pixels[index]; }
+const Pixel& PPM::operator[](unsigned int index) const { return pixels[index]; }
 
 std::istream& operator>>(std::istream& in, PPM& image){
     in >> image.magic >> std::ws;
