@@ -68,6 +68,13 @@ const PPM& Graphics::TranslateImage(PPM& image, int x, int y){
     const bool shiftLeft = x <= 0,
                shiftUp   = y <= 0;
 
+    //Shortcircut if the image is translated out of frame
+    if(!between<unsigned int>(abs(x), 0, image.GetWidth()) ||
+       !between<unsigned int>(abs(y), 0, image.GetHeight())){
+        std::fill(image.begin(), image.end(), blackPixel);
+        return image;
+    }
+
     int xPivotIdx = (shiftLeft ? 0 : imageSize) - x; //Select the top left or bottom right of the image
     int yPivotIdx = (shiftUp   ? 0 : imageSize) - (y * imageWidth); //Select the top or bottom row of the image
 
@@ -81,7 +88,7 @@ const PPM& Graphics::TranslateImage(PPM& image, int x, int y){
     if(shiftUp) std::fill(image.begin(), yPivot, blackPixel); //Fill from the top of the frame to the top of the image
     else        std::fill(yPivot,   image.end(), blackPixel); //Fill from the bottom of the frame to the bottom of the image
 
-    for(int row = 0; row < imageSize; row += imageWidth){
+    for(unsigned int row = 0; row < imageSize; row += imageWidth){
         if(shiftLeft) std::fill(image.begin() + row, xPivot + row, blackPixel); //Fill from the right of the image to the right of the frame
         else          std::fill(xPivot - row,   image.end() - row, blackPixel); //Fill from the left of the image to the left of the frame
     }
