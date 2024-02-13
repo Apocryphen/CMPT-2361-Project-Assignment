@@ -1,6 +1,11 @@
 #include "graphics.hpp"
 #include <algorithm>
 
+template<typename T>
+inline bool between(T value, T lower, T upper){
+    return (value >= lower && value <= upper);
+}
+
 Pixel pixelAverage(Pixel p){
     int avg = (p["red"] + p["green"] + p["blue"]) / 3;
     return Pixel(avg);
@@ -23,10 +28,10 @@ const PPM& RotateImage(PPM& image, double angle){
 
 const PPM& Graphics::ScaleImage(PPM& image, double factor){
     PPM resized;
-    int imageWidth = image.GetWidth(),
-        imageHeight = image.GetHeight(),
-        centerCol = imageWidth / 2,
-        centerRow = imageHeight / 2;
+    unsigned int imageWidth = image.GetWidth(),
+                 imageHeight = image.GetHeight(),
+                 centerCol = imageWidth / 2,
+                 centerRow = imageHeight / 2;
 
     //Manually set the metadata to avoid a full array copy.
     resized.SetMetaData(image);
@@ -36,12 +41,19 @@ const PPM& Graphics::ScaleImage(PPM& image, double factor){
         return center + static_cast<int>((value - center) / factor);
     };
 
-    for(int row = 0; row < imageHeight; row++){
-        for(int col = 0; col < imageWidth;  col++){
-            int dest = row * imageWidth + col;
-            int src = pivotedScale(centerRow, row) * imageWidth +
-                      pivotedScale(centerCol, col);
-            resized[dest] = image[src];
+    for(unsigned int row = 0; row < imageHeight; row++){
+        for(unsigned int col = 0; col < imageWidth;  col++){
+            unsigned int dest = row * imageWidth + col;
+
+            int srcRow = pivotedScale(centerRow, row);
+            int srcCol = pivotedScale(centerCol, col);
+            int src = srcRow * imageWidth + srcCol;
+
+            //If the sample point is outside of the source image, return a black pixel
+            if(between<int>(srcRow, 0, imageHeight) && between<int>(srcCol, 0, imageWidth))
+                resized[dest] = image[src];
+            else
+                resized[dest] = Pixel();
         }
     }
 
