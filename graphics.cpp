@@ -6,8 +6,18 @@ Pixel pixelAverage(Pixel p){
     return Pixel(avg);
 }
 
+const PPM& ApplyFilter(PPM& image, const char* filter){
+    //TODO
+    return image;
+}
+
 const PPM& Graphics::MakeGreyScale(PPM& image){
     std::transform(image.begin(), image.end(), image.begin(), pixelAverage);
+    return image;
+}
+
+const PPM& RotateImage(PPM& image, double angle){
+    //TODO
     return image;
 }
 
