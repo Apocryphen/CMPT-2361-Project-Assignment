@@ -3,7 +3,7 @@
 
 template<typename T>
 inline bool between(T value, T lower, T upper){
-    return (value >= lower && value <= upper);
+    return (value >= lower && value < upper);
 }
 
 Pixel pixelAverage(Pixel p){
