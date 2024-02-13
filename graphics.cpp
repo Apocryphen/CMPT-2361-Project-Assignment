@@ -6,18 +6,16 @@ inline bool between(T value, T lower, T upper){
     return (value >= lower && value < upper);
 }
 
-Pixel pixelAverage(Pixel p){
-    int avg = (p["red"] + p["green"] + p["blue"]) / 3;
-    return Pixel(avg);
-}
-
 const PPM& ApplyFilter(PPM& image, const char* filter){
     //TODO
     return image;
 }
 
 const PPM& Graphics::MakeGreyScale(PPM& image){
-    std::transform(image.begin(), image.end(), image.begin(), pixelAverage);
+    std::transform(image.begin(), image.end(), image.begin(), [](Pixel p){
+        int avg = (p["red"] + p["green"] + p["blue"]) / 3;
+        return Pixel(avg);
+    });
     return image;
 }
 
