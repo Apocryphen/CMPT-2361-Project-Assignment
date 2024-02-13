@@ -6,7 +6,7 @@ inline bool between(T value, T lower, T upper){
     return (value >= lower && value < upper);
 }
 
-const PPM& ApplyFilter(PPM& image, const char* filter){
+const PPM& Graphics::ApplyFilter(PPM& image, const char* filter){
     //TODO
     return image;
 }
@@ -19,7 +19,7 @@ const PPM& Graphics::MakeGreyScale(PPM& image){
     return image;
 }
 
-const PPM& RotateImage(PPM& image, double angle){
+const PPM& Graphics::RotateImage(PPM& image, double angle){
     //TODO
     return image;
 }
