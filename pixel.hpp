@@ -6,8 +6,8 @@
 class Pixel {
     public:
         Pixel();
-        Pixel(const Pixel& other);
-        Pixel(Pixel&& other);
+        Pixel(const Pixel& other) = default;
+        Pixel(Pixel&& other)      = default;
         Pixel(unsigned int intensity);
         Pixel(unsigned int r, unsigned int g, unsigned int b);
         ~Pixel();
@@ -15,8 +15,8 @@ class Pixel {
         unsigned int& operator[](const char* color);
         const unsigned int& operator[](const char* color) const;
 
-        Pixel& operator=(const Pixel& other);
-        Pixel& operator=(Pixel&& other);
+        Pixel& operator=(const Pixel& other) = default;
+        Pixel& operator=(Pixel&& other)      = default;
 
         friend std::ostream& operator<<(std::ostream& out, const Pixel& pixel);
         friend std::istream& operator>>(std::istream& in, Pixel& pixel);

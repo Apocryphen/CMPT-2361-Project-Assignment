@@ -6,18 +6,6 @@ Pixel::Pixel(){
     red = green = blue = 0;
 }
 
-Pixel::Pixel(const Pixel& other){
-    red = other.red;
-    green = other.green;
-    blue = other.blue;
-}
-
-Pixel::Pixel(Pixel&& other){ 
-    red = other.red;
-    green = other.green;
-    blue = other.blue;
-}
-
 Pixel::Pixel(unsigned int intensity) : Pixel(intensity, intensity, intensity) {}
 
 Pixel::Pixel(unsigned int r, unsigned int g, unsigned int b){
@@ -42,20 +30,6 @@ const unsigned int& Pixel::operator[](const char* color) const{
     else if(strcmp(color, "green") == 0) return green;
     else if(strcmp(color, "blue")  == 0) return blue;
     else throw InputOutOfBoundsException("Bad colour index", color);
-}
-
-Pixel& Pixel::operator=(const Pixel& other){
-    red = other.red;
-    green = other.green;
-    blue = other.blue;
-    return *this;
-}
-
-Pixel& Pixel::operator=(Pixel&& other){
-    red = other.red;
-    green = other.green;
-    blue = other.blue;
-    return *this;
 }
 
 std::ostream& operator<<(std::ostream& out, const Pixel& pixel){
