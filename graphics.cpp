@@ -7,7 +7,29 @@ inline bool between(T value, T lower, T upper){
 }
 
 const PPM& Graphics::ApplyFilter(PPM& image, const char* filter){
-    //TODO
+    //TODO // feel free to edit anytime
+    switch (filter) {
+        case 'r': // Red filter
+            std::for_each(image.begin(), image.end(), [](Pixel& p) {
+                p["green"] = 0;
+                p["blue"] = 0;
+            });
+            break;
+        case 'g': // Green filter
+            std::for_each(image.begin(), image.end(), [](Pixel& p) {
+                p["red"] = 0;
+                p["blue"] = 0;
+            });
+            break;
+        case 'b': // Blue filter
+            std::for_each(image.begin(), image.end(), [](Pixel& p) {
+                p["red"] = 0;
+                p["green"] = 0;
+            });
+            break;
+        default:
+            throw std::invalid_argument("Invalid filter key. Please choose 'r', 'g', or 'b'.");
+    }
     return image;
 }
 
