@@ -142,8 +142,6 @@ const PPM& Graphics::RotateImage(PPM& image, double angle){
         }
     }
     
-    //todo : deallocate rotatedImage
-
     return image;
 }
 
