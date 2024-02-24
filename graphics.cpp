@@ -85,10 +85,9 @@ const PPM& Graphics::ApplyFilter(PPM& image, const char* filter){
     }
     default:
         throw std::invalid_argument("Unknown filter type");
-
-        return image;
     }
 
+    return image;
 }
 
 const PPM& Graphics::MakeGreyScale(PPM& image){
