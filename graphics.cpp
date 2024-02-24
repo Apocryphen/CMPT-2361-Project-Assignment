@@ -1,5 +1,6 @@
 #include "graphics.hpp"
 #include <algorithm>
+#include <cmath> //for sin() and cos() calculations
 
 template<typename T>
 inline bool between(T value, T lower, T upper){
@@ -20,7 +21,47 @@ const PPM& Graphics::MakeGreyScale(PPM& image){
 }
 
 const PPM& Graphics::RotateImage(PPM& image, double angle){
-    //TODO
+    /*
+     matrix used for rotation
+     cos(x) -sin(x)
+     sin(x)  cos(x)
+     */
+    //mathematical variables required for angle calculation
+    double radians = angle * M_PI / 180;
+    double sinAngle = std::sin(radians);
+    double cosAngle = std::cos(radians);
+
+    int width = image.GetWidth();
+    int height = image.GetHeight();
+
+    //initialize empty vector
+    std::vector<std::vector<Pixel>> rotatedImage;
+
+    //get center points
+    int centerX = width / 2;
+    int centerY = height / 2;
+
+    for (int y = 0; y < height; ++y){
+        for (int x = 0; x < width; ++x){
+            int prevX = cosAngle * (x - centerX) + sinAngle * (y - centerY) + centerX;
+            int prevY = -sinAngle * (x - centerX) + cosAngle * (y - centerY) + centerY;
+
+            if (prevX >= 0 && prevX < width && prevY >= 0 && prevY < height){
+                rotatedImage[y][x] = image.pixels[prevY][prevX];
+            }
+            else{
+                rotatedImage[y][x] = {0,0,0}; //set to black if not in range
+            }
+        }
+    }
+
+    //copy the rotatedImage back to image and return it
+    for (int y = 0; y < height; ++y){
+        for (int x = 0; x < width; ++x){
+            image.pixels[y][x] = rotatedImage[y][x];
+        }
+    }
+    
     return image;
 }
 
