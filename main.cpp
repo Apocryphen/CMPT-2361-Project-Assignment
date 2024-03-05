@@ -13,7 +13,7 @@ void applyFilterDemo(PPM baseImage){
 }
 
 void rotateDemo(PPM baseImage){
-    Graphics::RotateImage(baseImage, 3.1415f/6);
+    Graphics::RotateImage(baseImage, 180);
     baseImage.SaveImageToFile(outputFolder + "rotateDemo.ppm");
 }
 
@@ -80,9 +80,9 @@ int main(int argc, char** argv){
     PPM loadedImage = timeFunction("Load image", loadFile, fileName);
 
     try {
-        //timeFunction("Convert to greyscale", greyscaleDemo, loadedImage);
-        //timeFunction("Scale image", scaleDemo, loadedImage);
-        //timeFunction("Translate image", translateDemo, loadedImage);
+        timeFunction("Convert to greyscale", greyscaleDemo, loadedImage);
+        timeFunction("Scale image", scaleDemo, loadedImage);
+        timeFunction("Translate image", translateDemo, loadedImage);
         timeFunction("Roatate image", rotateDemo, loadedImage);
         timeFunction("Filter image", applyFilterDemo, loadedImage);
     }
