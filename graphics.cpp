@@ -31,39 +31,35 @@ const PPM& Graphics::RotateImage(PPM& image, double angle){
     double sinAngle = std::sin(radians);
     double cosAngle = std::cos(radians);
 
-    int width = image.GetWidth();
-    int height = image.GetHeight();
-
-    //initialize empty vector
-    std::vector<std::vector<Pixel>> rotatedImage;
-
-    //get center points
-    int centerX = width / 2;
-    int centerY = height / 2;
-
-    for (int y = 0; y < height; ++y){
-        for (int x = 0; x < width; ++x){
-            int prevX = cosAngle * (x - centerX) + sinAngle * (y - centerY) + centerX;
-            int prevY = -sinAngle * (x - centerX) + cosAngle * (y - centerY) + centerY;
-
-            if (prevX >= 0 && prevX < width && prevY >= 0 && prevY < height){
-                rotatedImage[y][x] = image.pixels[prevY][prevX];
-            }
-            else{
-                rotatedImage[y][x] = {0,0,0}; //set to black if not in range
-            }
-        }
-    }
-
-    //copy the rotatedImage back to image and return it
-    for (int y = 0; y < height; ++y){
-        for (int x = 0; x < width; ++x){
-            image.pixels[y][x] = rotatedImage[y][x];
-        }
-    }
+    PPM newImage = image;
     
-    //todo : deallocate rotatedImage
+    //get center points
+    int centerX = image.GetWidth() / 2;
+    int centerY = image.GetHeight() / 2;
 
+    for (unsigned int y = 0; y < newImage.GetHeight(); ++y){
+        for (unsigned int x = 0; x < newImage.GetWidth(); ++x){
+            //translate point to origin for rotation calculation
+            int translateX = x - centerX;
+            int translateY = y - centerY;
+
+            //apply rotation matrix
+            int originalX = std::round(centerX + (translateX * cosAngle - translateY * sinAngle));
+            int originalY = std::round(centerY + (translateX * sinAngle + translateY * cosAngle));
+
+            //check whether original position is within bounds (else add blackspace)
+            if (originalX >= 0 && originalX < static_cast<int>(image.GetWidth()) && originalY >= 0 && originalY < static_cast<int>(image.GetHeight())){
+                    newImage[y * image.GetWidth() + x] = image[originalY * image.GetWidth() + originalX];
+            }else{
+                Pixel& newPixel = newImage[y * image.GetWidth() + x];
+                newPixel["red"] = 0;
+                newPixel["green"] = 0;
+                newPixel["blue"] = 0;
+            }
+        }
+    }
+
+    image = newImage;
     return image;
 }
 

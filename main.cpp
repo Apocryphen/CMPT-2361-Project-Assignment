@@ -80,9 +80,9 @@ int main(int argc, char** argv){
     PPM loadedImage = timeFunction("Load image", loadFile, fileName);
 
     try {
-        timeFunction("Convert to greyscale", greyscaleDemo, loadedImage);
-        timeFunction("Scale image", scaleDemo, loadedImage);
-        timeFunction("Translate image", translateDemo, loadedImage);
+        //timeFunction("Convert to greyscale", greyscaleDemo, loadedImage);
+        //timeFunction("Scale image", scaleDemo, loadedImage);
+        //timeFunction("Translate image", translateDemo, loadedImage);
         timeFunction("Roatate image", rotateDemo, loadedImage);
         timeFunction("Filter image", applyFilterDemo, loadedImage);
     }
