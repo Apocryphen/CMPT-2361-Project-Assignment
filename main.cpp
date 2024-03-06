@@ -13,7 +13,7 @@ void applyFilterDemo(PPM baseImage){
 }
 
 void rotateDemo(PPM baseImage){
-    Graphics::RotateImage(baseImage, 180);
+    Graphics::RotateImage(baseImage, 60);
     baseImage.SaveImageToFile(outputFolder + "rotateDemo.ppm");
 }
 
