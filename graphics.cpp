@@ -1,5 +1,6 @@
 #include "graphics.hpp"
 #include <algorithm>
+#include <cmath> //for sin() and cos() calculations
 
 template<typename T>
 inline bool between(T value, T lower, T upper){
@@ -37,8 +38,21 @@ const PPM& Graphics::MakeGreyScale(PPM& image){
 }
 
 const PPM& Graphics::RotateImage(PPM& image, double angle){
-    //TODO
-    return image;
+    //mathematical variables required for angle calculation
+    double radians = angle * M_PI / 180;
+    double sinAngle = std::sin(radians);
+    double cosAngle = std::cos(radians);
+
+    //get center points
+    int centerX = image.GetWidth() / 2;
+    int centerY = image.GetHeight() / 2;
+
+    auto transformer = [centerX, centerY, sinAngle, cosAngle](int x, int y){
+        int newX = centerX + (x - centerX) * cosAngle + (y - centerY) * sinAngle;
+        int newY = centerY - (x - centerX) * sinAngle + (y - centerY) * cosAngle;
+        return std::make_pair(newX, newY);
+    };
+    return indexTransform(image, transformer);
 }
 
 const PPM& Graphics::ScaleImage(PPM& image, double factor){
