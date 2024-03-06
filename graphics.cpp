@@ -38,46 +38,21 @@ const PPM& Graphics::MakeGreyScale(PPM& image){
 }
 
 const PPM& Graphics::RotateImage(PPM& image, double angle){
-    /*
-     matrix used for rotation
-     cos(x) -sin(x)
-     sin(x)  cos(x)
-     */
     //mathematical variables required for angle calculation
     double radians = angle * M_PI / 180;
     double sinAngle = std::sin(radians);
     double cosAngle = std::cos(radians);
 
-    PPM newImage = image;
-    
     //get center points
     int centerX = image.GetWidth() / 2;
     int centerY = image.GetHeight() / 2;
 
-    for (unsigned int y = 0; y < newImage.GetHeight(); ++y){
-        for (unsigned int x = 0; x < newImage.GetWidth(); ++x){
-            //translate point to origin for rotation calculation
-            int translateX = x - centerX;
-            int translateY = y - centerY;
-
-            //apply rotation matrix
-            int originalX = std::round(centerX + (translateX * cosAngle - translateY * sinAngle));
-            int originalY = std::round(centerY + (translateX * sinAngle + translateY * cosAngle));
-
-            //check whether original position is within bounds (else add blackspace)
-            if (originalX >= 0 && originalX < static_cast<int>(image.GetWidth()) && originalY >= 0 && originalY < static_cast<int>(image.GetHeight())){
-                    newImage[y * image.GetWidth() + x] = image[originalY * image.GetWidth() + originalX];
-            }else{
-                Pixel& newPixel = newImage[y * image.GetWidth() + x];
-                newPixel["red"] = 0;
-                newPixel["green"] = 0;
-                newPixel["blue"] = 0;
-            }
-        }
-    }
-
-    image = newImage;
-    return image;
+    auto transformer = [centerX, centerY, sinAngle, cosAngle](int x, int y){
+        int newX = centerX + (x - centerX) * cosAngle + (y - centerY) * sinAngle;
+        int newY = centerY - (x - centerX) * sinAngle + (y - centerY) * cosAngle;
+        return std::make_pair(newX, newY);
+    };
+    return indexTransform(image, transformer);
 }
 
 const PPM& Graphics::ScaleImage(PPM& image, double factor){
