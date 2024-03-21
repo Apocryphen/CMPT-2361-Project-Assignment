@@ -63,14 +63,6 @@ unsigned int PPM::GetWidth()    const noexcept { return width; }
 unsigned int PPM::GetSize()     const noexcept { return width * height; }
 unsigned int PPM::GetMaxColor() const noexcept { return maxColor; }
 
-void PPM::SetMetaData(const PPM& other){
-    magic   = other.magic;
-    comment = other.comment;
-    width   = other.width;
-    height  = other.height;
-    maxColor = other.maxColor;
-}
-
 void PPM::SetComment(std::string newComment)    { comment   = newComment; }
 void PPM::SetMagic(std::string newMagic)        { magic     = newMagic; }
 void PPM::SetHeight(unsigned int newHeight) noexcept     { height    = newHeight; }

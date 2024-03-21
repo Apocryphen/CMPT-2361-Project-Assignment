@@ -22,8 +22,6 @@ class PPM{
         unsigned int GetSize() const noexcept;
         unsigned int GetMaxColor() const noexcept;
 
-        void SetMetaData(const PPM& other);
-        
         void Resize(unsigned int factor);
         void Reserve(unsigned int factor);
 
