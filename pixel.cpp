@@ -2,19 +2,19 @@
 
 #include<cstring> //For strcmp
 
-Pixel::Pixel(){
+Pixel::Pixel() noexcept {
     red = green = blue = 0;
 }
 
-Pixel::Pixel(unsigned int intensity) : Pixel(intensity, intensity, intensity) {}
+Pixel::Pixel(unsigned int intensity) noexcept : Pixel(intensity, intensity, intensity) {}
 
-Pixel::Pixel(unsigned int r, unsigned int g, unsigned int b){
+Pixel::Pixel(unsigned int r, unsigned int g, unsigned int b) noexcept {
     red   = r;
     green = g;
     blue  = b;
 }
 
-Pixel::~Pixel() {
+Pixel::~Pixel() noexcept {
     red = green = blue = 0; // Not really necessary
 }
 

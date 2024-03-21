@@ -5,12 +5,12 @@
                     
 class Pixel {
     public:
-        Pixel();
+        Pixel() noexcept;
         Pixel(const Pixel& other) = default;
         Pixel(Pixel&& other)      = default;
-        Pixel(unsigned int intensity);
-        Pixel(unsigned int r, unsigned int g, unsigned int b);
-        ~Pixel();
+        Pixel(unsigned int intensity) noexcept;
+        Pixel(unsigned int r, unsigned int g, unsigned int b) noexcept;
+        ~Pixel() noexcept;
 
         unsigned int& operator[](const char* color);
         const unsigned int& operator[](const char* color) const;
