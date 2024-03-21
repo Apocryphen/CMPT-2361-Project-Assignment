@@ -56,7 +56,7 @@ const PPM& Graphics::ApplyFilter(PPM& image, const char* filter){
             };
         }
         else{
-            throw std::invalid_argument("Unknown filter type");
+            throw std::invalid_argument("Unknown filter type " + filterType);
         }
     }();
     

@@ -1,5 +1,4 @@
 #include <cstdlib>
-#include <chrono>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -55,7 +54,7 @@ PPM loadFile(std::string filename){
     try{
         loadedImage = PPM(infile);
     }
-    catch(const std::runtime_error& e){
+    catch(const std::exception& e){
         std::cerr << e.what() << std::endl;
         infile.close();
         exit(EXIT_FAILURE);
@@ -64,43 +63,26 @@ PPM loadFile(std::string filename){
     return loadedImage;
 }
 
-template<typename... Ts>
-void timeFunction(std::string desc, void fn(Ts...), Ts... args){
-    auto pre = std::chrono::high_resolution_clock::now();
-    fn(args...);
-    auto post = std::chrono::high_resolution_clock::now();
-    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(post - pre);
-    std::cout << desc << " operation took " << diff.count() << " (ms)" << std::endl;
-}
-
-template<typename R, typename... Ts>
-R timeFunction(std::string desc, R fn(Ts...), Ts... args){
-    auto pre = std::chrono::high_resolution_clock::now();
-    R result = fn(args...);
-    auto post = std::chrono::high_resolution_clock::now();
-    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(post - pre);
-    std::cout << desc << " operation took " << diff.count() << " (ms)" << std::endl;
-    return result;
-}
-
-
 int main(int argc, char** argv){
-    std::string fileName = "ex.ppm"; // Default filename
+    std::string fileName = "Shahriar.ppm"; // Default filename
     if (argc >= 2) fileName = argv[1];
-
-    PPM loadedImage = timeFunction("Load image", loadFile, fileName);
-
+    const PPM loadedImage = loadFile(fileName);
+    std::cout << "Computing" << std::flush;
     try {
-        timeFunction("Convert to greyscale", greyscaleDemo, loadedImage);
-        timeFunction("Scale image", scaleDemo, loadedImage);
-        timeFunction("Translate image", translateDemo, loadedImage);
-        timeFunction("Roatate image", rotateDemo, loadedImage);
-        timeFunction("Filter image", applyFilterDemo, loadedImage);
+        greyscaleDemo(loadedImage);
+        std:: cout << "." << std::flush;
+        scaleDemo(loadedImage);
+        std:: cout << "." << std::flush;
+        translateDemo(loadedImage);
+        std:: cout << "." << std::flush;
+        rotateDemo(loadedImage);
+        std:: cout << "." << std::flush;
+        applyFilterDemo(loadedImage);
+        std:: cout << ". Done!" << std::endl;
     }
-    catch(const std::runtime_error& e){
-        std::cerr << e.what() << std::endl;
+    catch(const std::exception& e){
+        std::cerr << "Error: " << e.what() << std::endl;
         exit(EXIT_FAILURE);
     }
-
     return EXIT_SUCCESS;
 }
