@@ -9,7 +9,18 @@
 const std::string outputFolder = "./output/";
 
 void applyFilterDemo(PPM baseImage){
-    //TODO
+    const PPM original(baseImage);
+
+    Graphics::ApplyFilter(baseImage, "emboss");
+    baseImage.SaveImageToFile(outputFolder + "embossDemo.ppm");
+    baseImage = original;
+
+    Graphics::ApplyFilter(baseImage, "blur");
+    baseImage.SaveImageToFile(outputFolder + "blurDemo.ppm");
+
+    baseImage = original;
+    Graphics::ApplyFilter(baseImage, "sharpen");
+    baseImage.SaveImageToFile(outputFolder + "sharpenDemo.ppm");
 }
 
 void rotateDemo(PPM baseImage){

@@ -1,6 +1,6 @@
 #include "graphics.hpp"
 #include <algorithm>
-#include <cmath> //for sin() and cos() calculations
+#include <numeric>
 
 template<typename T>
 inline bool between(T value, T lower, T upper){
@@ -25,7 +25,78 @@ PPM& indexTransform(PPM& image, std::function<std::pair<int, int>(int, int)> ind
 }
 
 const PPM& Graphics::ApplyFilter(PPM& image, const char* filter){
-    //TODO
+    const std::string filterType(filter);
+    struct Kernel{
+        int width;
+        std::vector<int> data;
+    };
+    const Kernel kernel = [&filterType]() -> const Kernel{
+        if (filterType == "blur") {
+            return { 
+                3,
+                { 1, 1, 1,
+                  1, 1, 1,
+                  1, 1, 1 }
+            };
+        }
+        else if (filterType == "sharpen") {
+            return {
+                3,
+                { -1, -1, -1,
+                  -1,  9, -1,
+                  -1, -1, -1 }
+            };
+        }
+        else if (filterType == "emboss") {
+            return {
+                3,
+                { -2, -1, 0,
+                  -1,  1, 1,
+                   0,  1, 2 }
+            };
+        }
+        else{
+            throw std::invalid_argument("Unknown filter type");
+        }
+    }();
+    
+    const PPM oldImage(image); // Make a copy to avoid modifying the original pixels during calculations
+    const int kernelWeight = std::accumulate(kernel.data.cbegin(), kernel.data.cend(), 0),
+              kernelCenter = kernel.data.size() / 2,
+              kernelRadius = kernel.width / 2;
+
+    //The narrowing conversion becomes problematic for very large images
+    const int imageWidth = image.GetWidth(),
+              imageHeight = image.GetHeight(),
+              maxColor = image.GetMaxColor();
+
+    for (int imageRow = kernelRadius; imageRow < imageHeight - kernelRadius; ++imageRow) {
+        for (int imageColumn = kernelRadius; imageColumn < imageWidth - kernelRadius; ++imageColumn) {
+
+            const int pixelIndex = imageRow * imageWidth + imageColumn;
+
+            int redSum = 0, greenSum = 0, blueSum = 0;
+            for (int kernelRow = -kernelRadius; kernelRow <= kernelRadius; ++kernelRow) {
+                for (int kernelColumn = -kernelRadius; kernelColumn <= kernelRadius; ++kernelColumn) {
+                    const int offsetPixelIndex = pixelIndex + (kernelRow * imageWidth + kernelColumn);
+                    const int kernelIndex = kernelRow * kernel.width + kernelColumn + kernelCenter;
+
+                    const Pixel& p = oldImage [offsetPixelIndex];
+                    const int weight = kernel.data[kernelIndex];
+                    redSum   += weight * p["red"];
+                    greenSum += weight * p["green"];
+                    blueSum  += weight * p["blue"];
+                }
+            }
+
+            //Idk how to nicely format this...
+            image[pixelIndex] = Pixel(
+                std::clamp(redSum   / kernelWeight, 0, maxColor),
+                std::clamp(greenSum / kernelWeight, 0, maxColor),
+                std::clamp(blueSum  / kernelWeight, 0, maxColor)
+            );
+        }
+    }
     return image;
 }
 
