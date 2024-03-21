@@ -46,8 +46,8 @@ class PPM{
 
         std::vector<Pixel>::iterator begin();
         std::vector<Pixel>::iterator end();
-        std::vector<Pixel>::const_iterator cbegin();
-        std::vector<Pixel>::const_iterator cend();
+        std::vector<Pixel>::const_iterator cbegin() const;
+        std::vector<Pixel>::const_iterator cend() const;
 
     private:
         std::vector<Pixel> pixels;

@@ -139,5 +139,5 @@ std::istream& operator>>(std::istream& in, PPM& image){
 
 std::vector<Pixel>::iterator PPM::begin()  { return pixels.begin(); }
 std::vector<Pixel>::iterator PPM::end()    { return pixels.end(); }
-std::vector<Pixel>::const_iterator PPM::cbegin() { return pixels.cbegin(); }
-std::vector<Pixel>::const_iterator PPM::cend()   { return pixels.cend(); }
+std::vector<Pixel>::const_iterator PPM::cbegin() const { return pixels.cbegin(); }
+std::vector<Pixel>::const_iterator PPM::cend()   const { return pixels.cend(); }
